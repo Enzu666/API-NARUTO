@@ -3,38 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naruto DB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>Naruto Universe</title>
 </head>
 <body>
-    <header>
-        <div class="caixa1">
-            <div class="titulo">
-                <h1>NARUTO DB</h1>
-            </div>
-            <div class="abas">
-                <div class="todos">
-                    <div class="icon">img</div>
-                    <p>todos</p>
-                </div>
-                <div class="favoritos">
-                    <div class="icon">img</div>
-                    <p>favoritos</p>
-                </div>
-            </div>
-        </div>
-    </header>
-    <main>
-        <div class="container">
-            <div class="naruto"><h1>NARUTO UNIVERSE</h1></div>
-            <div class="kanji"><P>探索忍者世界</P></div>
-            <div class="texto"><P>Explore o universo ninja e conheça todos os personagens de Naruto</P></div>
-            <div class="pesquisa"><P>pesquisa</P></div>
-            <div class="emoji"><P>🍥⚡🔥🌀🗡️</P></div>
-        </div>
-    </main>
-    <footer>
 
-    </footer>
+    <header>
+        <div class="logo">
+            <span class="logo-dot">●</span>
+            <span class="logo-text">NARUTO DB</span>
+        </div>
+        <nav>
+            <a href="#" class="nav-link active" id="nav-todos" onclick="mostrarTodos(event)">
+                <span class="nav-icon">🏠</span>
+                TODOS
+            </a>
+            <a href="#" class="nav-link" id="nav-favoritos" onclick="mostrarFavoritos(event)">
+                <span class="nav-icon">🤍</span>
+                FAVORITOS
+                <span class="badge" id="badge-favoritos" style="display:none">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="hero" id="hero">
+            <h1 class="hero-title">NARUTO UNIVERSE</h1>
+            <p class="hero-kanji">探索忍者世界</p>
+            <p class="hero-sub">Explore o universo ninja e conheça todos os personagens de Naruto</p>
+            <button class="btn-explorar" onclick="scrollParaBusca()">🔍 EXPLORAR PERSONAGENS</button>
+            <div class="hero-icons">
+                <span>🌀</span>
+                <span>⚡</span>
+                <span>🔥</span>
+                <span>💫</span>
+                <span>🗡️</span>
+            </div>
+        </section>
+
+        <section class="busca-section" id="busca-section">
+            <div class="busca-container">
+                <div class="input-busca-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="input-busca" placeholder="Buscar personagens por nome..." oninput="filtrar()">
+                </div>
+                <div class="selects-row">
+                    <div class="select-wrapper">
+                        <label>Vila</label>
+                        <select id="select-vila" onchange="filtrar()">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="select-wrapper">
+                        <label>Status</label>
+                        <select id="select-status" onchange="filtrar()">
+                            <option value="">Todos</option>
+                            <option value="Alive">Alive</option>
+                            <option value="Deceased">Deceased</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="personagens-section" id="secao-todos">
+            <div class="section-header">
+                <h2>🥷 Todos os Personagens</h2>
+                <span id="contagem-todos">carregando...</span>
+            </div>
+            <div class="grid" id="grid-todos"></div>
+        </section>
+
+        <section class="personagens-section" id="secao-favoritos" style="display:none">
+            <div class="section-header">
+                <h2>🩷 Meus Favoritos</h2>
+                <span id="contagem-favoritos">0 personagens encontrados</span>
+            </div>
+            <div class="grid" id="grid-favoritos"></div>
+        </section>
+
+    </main>
+
+    <div id="modal-overlay" class="modal-overlay" onclick="fecharModal(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-nome"></h2>
+                <button class="modal-fechar" onclick="fecharModalBtn()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-img-wrapper">
+                    <img id="modal-img" src="" alt="">
+                </div>
+                <div class="modal-info">
+                    <div class="modal-secao">
+                        <h3 class="modal-secao-titulo">Informações Pessoais</h3>
+                        <div class="modal-campo">
+                            <span class="modal-label">SEXO</span>
+                            <span id="modal-sexo" class="modal-valor"></span>
+                        </div>
+                        <div class="modal-campo">
+                            <span class="modal-label">DATA DE NASCIMENTO</span>
+                            <span id="modal-nascimento" class="modal-valor"></span>
+                        </div>
+                        <div class="modal-campo">
+                            <span class="modal-label">STATUS</span>
+                            <span id="modal-status" class="modal-valor"></span>
+                        </div>
+                        <div class="modal-campo">
+                            <span class="modal-label">CLÃ</span>
+                            <span id="modal-cla" class="modal-valor"></span>
+                        </div>
+                        <div class="modal-campo">
+                            <span class="modal-label">VILA</span>
+                            <span id="modal-vila" class="modal-valor"></span>
+                        </div>
+                        <div class="modal-campo">
+                            <span class="modal-label">RANK NINJA</span>
+                            <div id="modal-rank" class="tags"></div>
+                        </div>
+                    </div>
+                    <div class="modal-secao">
+                        <h3 class="modal-secao-titulo">Primeira Aparição</h3>
+                        <div class="modal-campo">
+                            <span class="modal-label">MANGÁ</span>
+                            <span id="modal-manga" class="modal-valor"></span>
+                        </div>
+                        <div class="modal-campo">
+                            <span class="modal-label">ANIME</span>
+                            <span id="modal-anime" class="modal-valor"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
